@@ -1,0 +1,21 @@
+## WRITTEN IN PINE SCRIPT
+strategy(title="Volume Weighted Moving Average", overlay=true)
+
+//bb var
+[middle, upper, lower] = ta.bb(close, 3, 1)
+//vma var
+buysig = ta.vwma(close, 10)
+buysig2 = ta.vwma(close, 30)
+//conditionals
+if(ta.crossover(buysig, buysig2))
+    strategy.entry("buy", strategy.long, 1)
+//sell variables
+sellsig = ta.crossover(ta.vwma(close, 10), close)
+sellsig2 = ta.crossover(ta.sar(0.04,0.04,0.4), close)
+sellsig3 = ta.crossover(ta.sar(0.03,0.03,0.3), close)
+sellsig4 = ta.crossover(close, upper)
+//conditionals
+if(sellsig4 and sellsig2)
+    strategy.entry("sell", strategy.short, 1)
+plot(ta.vwma(close,10), "buyline", color=color.green)
+plot(ta.vwma(close,30), "sellline", color=color.red)
